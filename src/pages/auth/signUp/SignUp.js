@@ -46,9 +46,14 @@ export default function SignUp() {
     setValues({...initialStateValues});
   }
 
-  const onDeleteUser = (id) => {
-    console.log(id);
-    db.collection('users').doc(id).delete();
+  const onDeleteUser = async (id) => {
+    await db.collection('users').doc(id).delete();
+    console.log('User ID ',id,' deleted')
+  }
+
+  const onUpdateUser = async (id) => {
+    await db.collection('users').doc(id).set(values);
+    console.log('User updated');
   }
 
   return (
@@ -68,7 +73,10 @@ export default function SignUp() {
           {users.map((user) => (
             <div className="box-item" key={user.id}>
               <div className="box-col">{user.firstname} {user.lastname}</div>
-              <div className="box-col"><button onClick={() => onDeleteUser(user.id) }>Delete</button></div>
+              <div className="box-col">
+                <button onClick={() => onDeleteUser(user.id) }>Delete</button>
+                <button onClick={() => onUpdateUser(user.id) }>Update</button>
+              </div>
             </div>)
           )}
         </div>
